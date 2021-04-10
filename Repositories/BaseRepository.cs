@@ -16,32 +16,32 @@ namespace BSTracker.Repositories
         public BaseRepository(IDbContext context)
             => Context = context;
 
-        public void Add(T t)
+        public virtual void Add(T t)
             => Context.GetDbSet<T>().Add(t);
 
-        public void Add(IEnumerable<T> ts)
+        public virtual void Add(IEnumerable<T> ts)
             => Context.GetDbSet<T>().AddRange(ts);
 
-        public T Get(string id)
+        public virtual T Get(string id)
             => Context.GetDbSet<T>()
             .AsNoTracking()
             .FirstOrDefault(x => x.Id == id);
 
-        public IEnumerable<T> Get(int offset = 0)
+        public virtual IEnumerable<T> Get(int offset = 0)
             => Get(null, null, offset);
 
-        public IEnumerable<T> Get(Expression<Func<T, object>> orderBy, int offset = 0)
+        public virtual IEnumerable<T> Get(Expression<Func<T, object>> orderBy, int offset = 0)
             => Get(orderBy, null, offset);
 
-        public IEnumerable<T> Get(Expression<Func<T, bool>> predicate, int offset = 0)
+        public virtual IEnumerable<T> Get(Expression<Func<T, bool>> predicate, int offset = 0)
             => Get(null, predicate, offset);
 
-        public IEnumerable<U> GetWithSelector<U>(Expression<Func<T, bool>> predicate, Expression<Func<T, U>> selector, int offset = 0)
+        public virtual IEnumerable<U> GetWithSelector<U>(Expression<Func<T, bool>> predicate, Expression<Func<T, U>> selector, int offset = 0)
             => GetQuery(null, predicate, offset)
             .Select(selector)
             .AsEnumerable();
 
-        public IEnumerable<T> Get(Expression<Func<T, object>> orderBy = null, Expression<Func<T, bool>> predicate = null, int offset = 0)
+        public virtual IEnumerable<T> Get(Expression<Func<T, object>> orderBy = null, Expression<Func<T, bool>> predicate = null, int offset = 0)
             => GetQuery(orderBy, predicate, offset)
             .AsEnumerable();
 
@@ -61,25 +61,19 @@ namespace BSTracker.Repositories
             return query.Take(25);
         }
 
-        public void Update(T t)
+        public virtual void Update(T t)
             => Context.GetDbSet<T>().Update(t);
 
-        public void Update(IEnumerable<T> ts)
+        public virtual void Update(IEnumerable<T> ts)
             => Context.GetDbSet<T>().UpdateRange(ts);
 
-        public void Delete(T t)
+        public virtual void Remove(T t)
             => Context.GetDbSet<T>().Remove(t);
 
-        public void Delete(IEnumerable<T> ts)
+        public virtual void Remove(IEnumerable<T> ts)
             => Context.GetDbSet<T>().RemoveRange(ts);
 
-        public void Remove(T t)
-            => Context.GetDbSet<T>().Remove(t);
-
-        public void Remove(IEnumerable<T> ts)
-            => Context.GetDbSet<T>().RemoveRange(ts);
-
-        public int SaveChanges()
+        public virtual int SaveChanges()
             => Context.SaveChanges();
     }
 }

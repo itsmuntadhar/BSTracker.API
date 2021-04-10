@@ -12,7 +12,7 @@ namespace BSTracker.Repositories
         {
         }
 
-        public new IEnumerable<Bullshit> Get(int offset)
+        public override IEnumerable<Bullshit> Get(int offset)
             => Context.GetDbSet<Bullshit>()
             .AsNoTracking()
             .OrderByDescending(x => x.CreatedAt)

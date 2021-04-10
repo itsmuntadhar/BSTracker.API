@@ -12,8 +12,8 @@ namespace BSTracker.Interfaces
         void Add(IEnumerable<T> ts);
         void Update(T t);
         void Update(IEnumerable<T> ts);
-        void Delete(T t);
-        void Delete(IEnumerable<T> ts);
+        void Remove(T t);
+        void Remove(IEnumerable<T> ts);
         int SaveChanges();
     }
 }

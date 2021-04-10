@@ -26,11 +26,11 @@ namespace BSTracker.Services
         public void Add(IEnumerable<T> ts)
             => Operate(ts, (_ts) => Repo.Add(_ts));
 
-        public void Delete(T t)
-            => Operate(t, (_t) => Repo.Delete(t));
+        public void Remove(T t)
+            => Operate(t, (_t) => Repo.Remove(t));
 
-        public void Delete(IEnumerable<T> ts)
-            => Operate(ts, (_ts) => Repo.Delete(ts));
+        public void Remove(IEnumerable<T> ts)
+            => Operate(ts, (_ts) => Repo.Remove(ts));
 
         public T Get(string id)
         {
