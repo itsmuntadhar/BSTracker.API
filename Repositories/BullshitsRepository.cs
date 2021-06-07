@@ -28,5 +28,14 @@ namespace BSTracker.Repositories
             .Skip(offset)
             .Take(Limit)
             .AsEnumerable();
+
+        public Dictionary<string, int> GetStats()
+            => Context.GetDbSet<Bullshit>()
+            .AsNoTracking()
+            .Select(x => new { x.WhoSaidIt, x.Id })
+            .GroupBy(x => x.WhoSaidIt, (key, group) => new { key, count = group.Count() })
+            .AsEnumerable()
+            .OrderByDescending(x => x.count)
+            .ToDictionary(x => x.key, x => x.count);
     }
 }

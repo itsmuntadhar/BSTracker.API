@@ -29,5 +29,8 @@ namespace BSTracker.Services
                 return Repo.Get(offset);
             return ((BullshitsRepository)Repo).Get(offset, whoSaidIt);
         }
+
+        public Dictionary<string, int> GetStats()
+            => ((BullshitsRepository)Repo).GetStats();
     }
 }

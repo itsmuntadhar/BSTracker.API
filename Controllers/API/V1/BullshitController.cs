@@ -37,6 +37,14 @@ namespace BSTracker.Controllers.API.V1
                 return Ok(bullshit);
             });
 
+        [HttpGet("stats")]
+        public ActionResult<Dictionary<string, int>> GetStatsAction()
+            => Perform(() =>
+            {
+                Dictionary<string, int> stats = _service.GetStats();
+                return Ok(stats);
+            });
+
         [HttpPost]
         public ActionResult<Bullshit> CreateBullshitAction([FromBody] NewBullshit dto)
             => Perform(() =>
