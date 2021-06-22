@@ -12,7 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
-using System.Collections.Generic;
+using System;
 
 namespace BSTracker
 {
@@ -38,7 +38,7 @@ namespace BSTracker
 
             services.AddSingleton(Configuration);
 
-            ConfigureDbContext(services);
+            ConfigureDbContext(services, Configuration);
             AddRepositories(services);
             AddServices(services);
 
@@ -74,14 +74,36 @@ namespace BSTracker
             context.Database.Migrate();
         }
 
-        private void ConfigureDbContext(IServiceCollection services)
+        private static void ConfigureDbContext(IServiceCollection services, IConfiguration config)
+        {
+            var engine = config["Engine"];
+            var connectionString = config.GetConnectionString(engine);
+            if (engine == "SQLite")
+                ConfigureSQLiteDbContext(services, connectionString);
+            else if (engine == "Postgres")
+                ConfigurePostgresDbContext(services, connectionString);
+            else
+                throw new NotImplementedException("Please use a supported db context");
+        }
+
+        private static void ConfigureSQLiteDbContext(IServiceCollection services, string connectionString)
         {
             services.AddDbContext<SQLiteDbContext>(options =>
             {
                 options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-                options.UseSqlite(Configuration["ConnectionString"]);
+                options.UseSqlite(connectionString);
             });
             services.AddScoped<IDbContext, SQLiteDbContext>();
+        }
+
+        private static void ConfigurePostgresDbContext(IServiceCollection services, string connectionString)
+        {
+            services.AddDbContext<PostgresDbContext>(options =>
+            {
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                options.UseNpgsql(connectionString);
+            });
+            services.AddScoped<IDbContext, PostgresDbContext>();
         }
 
         private static void AddRepositories(IServiceCollection services)
