@@ -24,11 +24,7 @@ namespace BSTracker.Services
         }
 
         public IEnumerable<Bullshit> Get(int offset = 0, string whoSaidIt = "")
-        {
-            if (string.IsNullOrEmpty(whoSaidIt))
-                return Repo.Get(offset);
-            return ((BullshitsRepository)Repo).Get(offset, whoSaidIt);
-        }
+            => ((BullshitsRepository)Repo).Get(offset, whoSaidIt);
 
         public Dictionary<string, int> GetStats()
             => ((BullshitsRepository)Repo).GetStats();

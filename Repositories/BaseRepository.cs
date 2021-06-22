@@ -48,7 +48,7 @@ namespace BSTracker.Repositories
         private IQueryable<T> GetQuery(Expression<Func<T, object>> orderBy = null, Expression<Func<T, bool>> predicate = null, int offset = 0)
         {
             var query = Context.GetDbSet<T>()
-                .AsNoTracking();
+                .AsQueryable();
             if (orderBy is null)
                 query = query.OrderBy(x => x.Id);
             else

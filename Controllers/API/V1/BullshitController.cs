@@ -25,7 +25,11 @@ namespace BSTracker.Controllers.API.V1
 
         [HttpGet]
         public ActionResult<IEnumerable<Bullshit>> GetAction([FromQuery] int offset = 0, [FromQuery] string whoSaidIt = "")
-            => Perform(() => Ok(_service.Get(offset)));
+            => Perform(() =>
+            {
+                var bses = _service.Get(offset, whoSaidIt);
+                return Ok(bses);
+            });
 
         [HttpGet("{id}")]
         public ActionResult<Bullshit> GetSingleAction([FromRoute] string id)

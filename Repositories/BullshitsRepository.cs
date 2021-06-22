@@ -12,26 +12,21 @@ namespace BSTracker.Repositories
         {
         }
 
-        public override IEnumerable<Bullshit> Get(int offset)
-            => Context.GetDbSet<Bullshit>()
-            .AsNoTracking()
-            .OrderByDescending(x => x.CreatedAt)
-            .Skip(offset)
-            .Take(Limit)
-            .AsEnumerable();
-
         public IEnumerable<Bullshit> Get(int offset, string whoSaidIt)
-            => Context.GetDbSet<Bullshit>()
-            .AsNoTracking()
-            .Where(x => x.WhoSaidIt.ToLower().Contains(whoSaidIt))
-            .OrderByDescending(x => x.CreatedAt)
-            .Skip(offset)
-            .Take(Limit)
-            .AsEnumerable();
+        {
+            var query = Context.GetDbSet<Bullshit>()
+                .AsQueryable();
+            if (string.IsNullOrEmpty(whoSaidIt) == false)
+                query = query.Where(x => x.WhoSaidIt.ToLower().Contains(whoSaidIt));
+            return query
+                .OrderByDescending(x => x.CreatedAt)
+                .Skip(offset)
+                .Take(25)
+                .AsEnumerable();
+        }
 
         public Dictionary<string, int> GetStats()
             => Context.GetDbSet<Bullshit>()
-            .AsNoTracking()
             .Select(x => new { x.WhoSaidIt, x.Id })
             .GroupBy(x => x.WhoSaidIt, (key, group) => new { key, count = group.Count() })
             .AsEnumerable()
