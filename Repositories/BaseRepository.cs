@@ -49,13 +49,15 @@ namespace BSTracker.Repositories
         {
             var query = Context.GetDbSet<T>()
                 .AsQueryable();
-            if (orderBy is null)
-                query = query.OrderBy(x => x.Id);
-            else
-                query = query.OrderBy(orderBy);
 
             if (predicate is not null)
                 query = query.Where(predicate);
+
+            if (orderBy is null)
+                query = query.OrderByDescending(x => x.CreatedAt);
+            else
+                query = query.OrderBy(orderBy);
+
             if (offset >= 0)
                 query = query.Skip(offset);
             return query.Take(25);

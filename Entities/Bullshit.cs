@@ -15,8 +15,5 @@ namespace BSTracker.Entities
         [MaxLength(512)]
         [Required]
         public string WhoSaidIt { get; set; }
-
-        [Required]
-        public DateTimeOffset CreatedAt { get; set; }
     }
 }
