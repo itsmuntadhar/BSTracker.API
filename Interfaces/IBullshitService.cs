@@ -6,7 +6,7 @@ namespace BSTracker.Interfaces
 {
     public interface IBullshitService : IService<Bullshit>
     {
-        IEnumerable<Bullshit> Get(int offset = 0, string whoSaidIt = "");
+        IEnumerable<Bullshit> Get(int offset, string whoSaidIt);
         Bullshit Create(NewBullshit dto);
         Dictionary<string, int> GetStats();
     }

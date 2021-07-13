@@ -28,13 +28,13 @@ namespace BSTracker.Repositories
             .FirstOrDefault(x => x.Id == id);
 
         public virtual IEnumerable<T> Get(int offset = 0)
-            => Get(null, null, offset);
+            => Get(orderBy: null, predicate: null, offset: offset);
 
         public virtual IEnumerable<T> Get(Expression<Func<T, object>> orderBy, int offset = 0)
-            => Get(orderBy, null, offset);
+            => Get(orderBy: orderBy, predicate: null, offset: offset);
 
         public virtual IEnumerable<T> Get(Expression<Func<T, bool>> predicate, int offset = 0)
-            => Get(null, predicate, offset);
+            => Get(orderBy: null, predicate: predicate, offset);
 
         public virtual IEnumerable<U> GetWithSelector<U>(Expression<Func<T, bool>> predicate, Expression<Func<T, U>> selector, int offset = 0)
             => GetQuery(null, predicate, offset)
